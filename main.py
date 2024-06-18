@@ -36,13 +36,13 @@ def read_root():
     return {"Hello": "World"}
 
 @app.post("/image/{item_id}")
-async def upload_image(item_id: int, file: UploadFile = File(...)):
+async def upload_image(item_name: str, file: UploadFile = File(...)):
     try:
         # Read the file contents
-        contents = file.file.read()
+        contents = await file.read()
 
         # Construct a file path
-        file_path = os.path.join(UPLOAD_DIRECTORY, file.filename)
+        file_path = os.path.join(UPLOAD_DIRECTORY, f"{item_name}.jpg")
 
         # Write the file to the specified path
         with open(file_path, 'wb') as f:
@@ -52,19 +52,23 @@ async def upload_image(item_id: int, file: UploadFile = File(...)):
         return {"message": f"There was an error uploading the file: {str(e)}"}
     
     finally:
-        file.file.close()
+        await file.close()
 
     return {"message": f"Successfully uploaded {file.filename}"}
 
-# @app.post('/files')
-# def get_file(file: bytes = File(...)):
-#     content = file.decode('utf-8')
-#     lines = content.split('\n')
-#     return {"content": lines}
-
 @app.get("/image/{item_id}")
-def read_image(item_name: str, item_id: int, q: Union[str, None] = None):
-    return {"item_name": item_name, "item_id": item_id, "q": q}
+def read_image(item_name: str):
+    
+    # Construct the file path based on item_id
+    file_path = os.path.join(UPLOAD_DIRECTORY, f"{item_name}.jpg")
+    
+    #Check if the file exists
+    if not os.path.exists(file_path):
+        raise HTTPException(status_code=404, detail="Image not found")
+
+    # Return the file as a FileResponse
+    return FileResponse(file_path, media_type="image/jpeg")
+    # return {"item_name": item_name, "item_id": item_id, "q": q}
 
 @app.put("/image/{item_id}")
 def update_item(item_id: int, updated_item: Item):
