@@ -99,6 +99,23 @@ def rename_image(item_id: int,  current_filename: str, new_filename: str):
 
 @app.delete("/image/{item_id}")
 def delete_item(item_id: int):
-    return {"message": f"Item{item_id} has been deleted"}
+    # Find the file with the specified item_id
+    file_path = None
+    for filename in os.listdir(UPLOAD_DIRECTORY):
+        if filename.startswith(f"{item_id}_"):
+            file_path = os.path.join(UPLOAD_DIRECTORY, filename)
+            break
+
+    # Check if the file exists
+    if not file_path or not os.path.exists(file_path):
+        raise HTTPException(status_code=404, detail="Image not found")
+
+    # Delete the file
+    try:
+        os.remove(file_path)
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error deleting file: {str(e)}")
+
+    return {"message": f"Successfully deleted file of item_id {item_id}"}
 
 
