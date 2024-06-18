@@ -88,7 +88,7 @@ def rename_image(item_id: int,  current_filename: str, new_filename: str):
 
 
 @app.delete("/image/{item_id}")
-def delete_item(item_id: int):
+def delete_image(item_id: int):
     # Find the file with the specified item_id
     file_path = None
     for filename in os.listdir(UPLOAD_DIRECTORY):
