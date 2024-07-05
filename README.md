@@ -11,3 +11,7 @@ main.py: main file for the RestAPI
 ├── requirements.txt
 ├── Dockerfile
 └── docker-compose.yaml
+
+
+pegatronEnv: conda environment for the project
+fastapi: conda environment for the fastapi
