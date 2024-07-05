@@ -6,7 +6,7 @@ import uvicorn
 import os
 
 # Directory where files will be saved
-UPLOAD_DIRECTORY = "./img/"
+UPLOAD_DIRECTORY = "C:/Users/user/Pegatron/Pegatron_Repo/fastapi-docker/app/img"
 
 # Create the FastAPI Instance 
 app = FastAPI(title="Fast API",
@@ -21,6 +21,15 @@ LOG.info(uvicorn.Config.asgi_version)
 @app.get("/")
 def read_root():
     return {"Hello": "World"}
+
+
+@app.get("/image/{item_id}")
+async def read_item_id(item_id: int):
+    return {"item_id": item_id}
+
+@app.get("/item_name")
+async def read_item_name(item_name: str):
+    return {"item_name": item_name}
 
 
 @app.post("/image/{item_id}")
