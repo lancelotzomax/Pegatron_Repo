@@ -118,5 +118,5 @@ def delete_image(item_id: int):
     return {"message": f"Successfully deleted file of item_id {item_id}"}
 
 
-if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+# if __name__ == "__main__":
+#     uvicorn.run(app, host="0.0.0.0", port=8000)
