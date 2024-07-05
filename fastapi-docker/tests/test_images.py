@@ -9,14 +9,6 @@ UPLOAD_DIRECTORY = "C:/Users/user/Pegatron/Pegatron_Repo/fastapi-docker/app/img"
 
 client = TestClient(app)
 
-@app.get("/image/{item_id}")
-async def read_item_id(item_id: int):
-    return {"item_id": item_id}
-
-@app.get("/item_name")
-async def read_item_name(item_name: str):
-    return {"item_name": item_name}
-
 
 def test_read_root():
     response = client.get("/")
@@ -24,9 +16,9 @@ def test_read_root():
     assert response.json() == {"Hello": "World"}
 
 # ensure that images is successfully uploaded 
-def test_upload_image(item_id: int, item_name: str):
-    # item_id = item_id
-    # item_name = item_name
+def test_upload_image():
+    item_id = "1"
+    item_name = "test_image"
     file_path = UPLOAD_DIRECTORY+f'/{item_id}_{item_name}.jpg'
 
     with open(file_path, "rb") as f:
